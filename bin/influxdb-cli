@@ -5,6 +5,7 @@ require 'influxdb'
 require 'pry'
 require 'thor'
 require 'awesome_print'
+require 'terminal-table'
 
 Dir['../lib/**/*.rb'].each &method(:require)
 
@@ -28,6 +29,22 @@ class InfluxDBClientTasks < Thor
 end
 
 def db; InfluxDBClientTasks.db; end
+
+def query(query)
+  result = db.query(query)
+  count = {}
+  result.to_h.keys.each do |serie_name|
+    headings = result[serie_name].first.keys
+    rows = result[serie_name].collect(&:values)
+    table = Terminal::Table.new title: serie_name, headings: headings, rows: rows
+    puts table
+    # empty line
+    puts
+    # count total per serie
+    count["#{serie_name}.count"] = result[serie_name].size
+  end
+  count
+end
 
 InfluxDBClientTasks.start
 
