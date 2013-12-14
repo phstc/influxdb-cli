@@ -79,6 +79,9 @@ def query(query)
     end
   end
 end
+```
+
+```shel
 
 2.0.0 (main)> show-doc InfluxDB::Client#initialize
 
