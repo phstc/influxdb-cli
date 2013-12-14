@@ -51,7 +51,7 @@ Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"phst
 Query with a [tabularized](https://github.com/visionmedia/terminal-table) output:
 
 ```shell
-2.0.0 (main)> query('select * from deploys')
+2.0.0 (main)> SELECT * FROM deploys
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
 |                                                    deploys                                                  |
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
