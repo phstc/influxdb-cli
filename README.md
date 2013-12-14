@@ -34,9 +34,9 @@ Options:
 influxdb-cli
 Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"=>"root", "database"=>"db"}
 ✔ ready
-2.0.0 (main)> db.query('SELECT * FROM /./')
+2.0.0 (main)> db.query('SELECT * FROM deploys')
 => {
-     "cap" => [
+     "deploys" => [
         [ 0] {
                          "time" => "...",
               "sequence_number" => "...",
