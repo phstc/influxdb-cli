@@ -48,6 +48,7 @@ Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"
         },
 2.0.0 (main)> db.get_database_list
 ```
+[Tabularize?](https://github.com/phstc/influxdb-cli/issues/1)
 
 ### Pry commands
 
