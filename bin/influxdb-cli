@@ -28,26 +28,38 @@ class InfluxDBClientTasks < Thor
   default_task :db
 end
 
+# Returns {InfluxDB::Client} instance using given parameters.
+#
+# @return [InfluxDB::Client]
 def db; InfluxDBClientTasks.db; end
 
+# Queries data using {http://influxdb.org/docs/query_language/ InfluxDB Query Language}
+# and prints a tabularized output.
+#
+# i.e. query('select value from response_times')
+#
+# @see InfluxDB::Client#query
+#
+# @return [Hash] the number of points per time series i.e. { 'response_times.count' => 10 }
 def query(query)
   result = db.query(query)
-  count = {}
-  result.to_h.keys.each do |serie_name|
-    headings = result[serie_name].first.keys
-    rows = result[serie_name].collect(&:values)
-    table = Terminal::Table.new title: serie_name, headings: headings, rows: rows
+  number_of_points = {}
+  result.to_h.keys.each do |series|
+    headings = result[series].first.keys
+    rows = result[series].collect(&:values)
+    table = Terminal::Table.new title: series, headings: headings, rows: rows
     puts table
-    # empty line
+    # empty line between time series output
     puts
-    # count total per serie
-    count["#{serie_name}.count"] = result[serie_name].size
+    # count total per time series
+    number_of_points["#{series}.count"] = result[series].size
   end
-  count
+  number_of_points
 end
 
 InfluxDBClientTasks.start
 
+# awesome_print
 Pry.config.print = proc { |output, value| Pry::Helpers::BaseHelpers.stagger_output("=> #{value.ai}", output) }
 
 pry
