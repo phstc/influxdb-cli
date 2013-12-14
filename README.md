@@ -30,15 +30,30 @@ Options:
 
 ### Usage
 
-[Tabularized](https://github.com/visionmedia/terminal-table) output:
+Connect to a database:
 
 ```shell
 influxdb-cli
 Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"=>"root", "database"=>"db"}
 ✔ ready
-2.0.0 (main)> query('select * from cap limit 1')
+```
+
+or
+
+```shell
+influxdb-cli -u user -p password -d database -h sandbox.influxdb.org --port 9061
+Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"phstc", "password"=>"RggLimEQfK36or", "database"=>"spree"}
+✔ ready
+```
+
+[InfluxDB Playground](http://play.influxdb.org) :metal:
+
+Query with a [tabularized](https://github.com/visionmedia/terminal-table) output:
+
+```shell
+2.0.0 (main)> query('select * from deploys')
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
-|                                                                  cap                                        |
+|                                                    deploys                                                  |
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
 | time          | sequence_number | application     | branch | latest_revision | previous_revision | stage    |
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
@@ -46,12 +61,12 @@ Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
 
 => {
-    "cap.count" => 1
+    "deploys.count" => 1
 }
 ```
 
 
-Ruby Hash output ([awesome_print](https://github.com/michaeldv/awesome_print)):
+Query with a Ruby Hash output ([awesome_print](https://github.com/michaeldv/awesome_print)):
 
 ```shell
 2.0.0 (main)> db.query('SELECT * FROM deploys')
@@ -68,6 +83,7 @@ Ruby Hash output ([awesome_print](https://github.com/michaeldv/awesome_print)):
         },
 ```
 
+Other methods:
 
 ```shell
 2.0.0 (main)> db.write_point(name, data)
