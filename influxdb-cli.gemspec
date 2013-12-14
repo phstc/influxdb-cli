@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'pry'
   gem.add_dependency 'thor', '~> 0.18.1'
   gem.add_dependency 'awesome_print'
+  gem.add_dependency 'terminal-table'
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency "bundler"

@@ -30,10 +30,30 @@ Options:
 
 ### Usage
 
+[Tabularized](https://github.com/visionmedia/terminal-table) output:
+
 ```shell
 influxdb-cli
 Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"=>"root", "database"=>"db"}
 ✔ ready
+2.0.0 (main)> query('select * from cap limit 1')
++---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
+|                                                                  cap                                        |
++---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
+| time          | sequence_number | application     | branch | latest_revision | previous_revision | stage    |
++---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
+| ...           | ...             | ...             | ...    | ...             | ...               | ...      |
++---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
+
+=> {
+    "cap.count" => 1
+}
+```
+
+
+Ruby Hash output ([awesome_print](https://github.com/michaeldv/awesome_print)):
+
+```shell
 2.0.0 (main)> db.query('SELECT * FROM deploys')
 => {
      "deploys" => [
@@ -46,9 +66,19 @@ Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"
             "previous_revision" => "...",
                         "stage" => "..."
         },
-2.0.0 (main)> db.get_database_list
 ```
-[Tabularize?](https://github.com/phstc/influxdb-cli/issues/1)
+
+
+```shell
+2.0.0 (main)> db.write_point(name, data)
+2.0.0 (main)> db.get_database_list
+2.0.0 (main)> ls -q db
+InfluxDB::Client#methods:
+  _write                    create_database       database=             delete_database_user    get_database_user_list  password   port=  queue=                username
+  alter_database_privilege  create_database_user  delete_cluster_admin  get_cluster_admin_list  host                    password=  query  update_cluster_admin  username=
+  create_cluster_admin      database              delete_database       get_database_list       host=                   port       queue  update_database_user  write_point
+instance variables: @database  @host  @http  @password  @port  @queue  @username
+```
 
 ### Pry commands
 
