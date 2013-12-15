@@ -56,6 +56,30 @@ module InfluxDBClient
 
         described_class.print_tabularize(result, output)
       end
+
+      context 'when empty results' do
+        let(:result)  { { series1: [{ value1: 1, value2: 2 }],
+                          series2: [] } }
+
+        it 'puts no results found' do
+          output = double 'Output'
+          table  = double 'Table'
+          Terminal::Table.stub(new: table)
+
+          # should print series1
+          expect(output).to receive(:puts).once.with(table)
+          # no results for series 2
+          expect(output).to receive(:puts).once.with('No results found for series2')
+          # line break for series
+          expect(output).to receive(:puts).twice.with(no_args)
+
+          described_class.print_tabularize(result, output)
+        end
+
+        it 'returns series count' do
+          expect(described_class.print_tabularize(result)).to eq({ 'series1.count' => 1, 'series2.count' => 0 })
+        end
+      end
     end
   end
 end
