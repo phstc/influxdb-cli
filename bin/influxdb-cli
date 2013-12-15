@@ -47,8 +47,14 @@ InfluxDBClientTasks.start
 # allow typing queries directly from console i.e.`select * from deploys` instead of `query('select * from deploys')`.
 # matches `delete from ...` and `select ... from ...`
 Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Execute a query' do |cmd|
-  result = db.query(cmd)
+  start     = Time.now
+  result    = db.query(cmd)
+  duration  = Time.now - start
+
   InfluxDBClient::Client.print_tabularize(result)
+
+  # print query duration in seconds
+  puts "Query duration: #{duration.round(2)}s"
 end
 
 # awesome_print
