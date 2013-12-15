@@ -9,6 +9,7 @@ require 'terminal-table'
 
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
+require 'influxdb_client/version'
 require 'influxdb_client/client'
 
 class InfluxDBClientTasks < Thor
@@ -23,6 +24,13 @@ class InfluxDBClientTasks < Thor
     @@db ||= InfluxDB::Client.new options[:database],
       { username: options[:username], password: options[:password], host: options[:host], port: options[:port] }
     puts '✔ ready'
+  end
+
+  desc 'version', 'Show influxdb-cli version'
+  def version
+    puts "influxdb-cli #{InfluxDBClient::VERSION}"
+    # skip `pry` console
+    exit 0
   end
 
   def self.db; @@db; end
