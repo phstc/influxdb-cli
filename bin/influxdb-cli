@@ -7,7 +7,9 @@ require 'thor'
 require 'awesome_print'
 require 'terminal-table'
 
-Dir['../lib/**/*.rb'].each &method(:require)
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+
+require 'influxdb_client/client'
 
 class InfluxDBClientTasks < Thor
   desc 'db', 'Connect to InfluxDB'
@@ -59,7 +61,7 @@ end
 
 # allow typing queries directly from console i.e.`select * from deploys` instead of `query('select * from deploys')`.
 # matches `delete from ...` and `select ... from ...`
-Pry::Commands.block_command /\A\s*((delete\s+from|select\s+.+\s+from)\s*.+)\z/i, 'Execute a query' do |cmd|
+Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Execute a query' do |cmd|
   query(cmd)
 end
 
