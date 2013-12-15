@@ -30,10 +30,6 @@ module InfluxDBClient
                         series2: [{ value3: 3,   value4: 4, value5: nil, value6: nil },
                                   { value3: nil, value4: 4, value5: 5,   value6: 6   }] } }
 
-      it 'returns series count' do
-        expect(described_class.print_tabularize(result)).to eq({ 'series1.count' => 1, 'series2.count' => 2 })
-      end
-
       it 'generates tables' do
         expect(Terminal::Table).to receive(:new).
           with(title: :series1, headings: [:value1, :value2], rows: [[1, 2]])
@@ -44,13 +40,16 @@ module InfluxDBClient
         described_class.print_tabularize(result)
       end
 
-      it 'puts tables' do
+      it 'prints results' do
         output = double 'Output'
         table  = double 'Table'
         Terminal::Table.stub(new: table)
 
         # should print series1 and series2
         expect(output).to receive(:puts).twice.with(table)
+        # print results count
+        expect(output).to receive(:puts).once.with('1 result found for series1')
+        expect(output).to receive(:puts).once.with('2 results found for series2')
         # line break for series
         expect(output).to receive(:puts).twice.with(no_args)
 
@@ -61,23 +60,21 @@ module InfluxDBClient
         let(:result)  { { series1: [{ value1: 1, value2: 2 }],
                           series2: [] } }
 
-        it 'puts no results found' do
+        it 'prints no results found' do
           output = double 'Output'
           table  = double 'Table'
           Terminal::Table.stub(new: table)
 
           # should print series1
           expect(output).to receive(:puts).once.with(table)
+          # print results count
+          expect(output).to receive(:puts).once.with('1 result found for series1')
           # no results for series 2
           expect(output).to receive(:puts).once.with('No results found for series2')
           # line break for series
           expect(output).to receive(:puts).twice.with(no_args)
 
           described_class.print_tabularize(result, output)
-        end
-
-        it 'returns series count' do
-          expect(described_class.print_tabularize(result)).to eq({ 'series1.count' => 1, 'series2.count' => 0 })
         end
       end
     end

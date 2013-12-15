@@ -42,27 +42,13 @@ end
 # @return [InfluxDB::Client]
 def db; InfluxDBClientTasks.db; end
 
-# Queries data using {http://influxdb.org/docs/query_language/ InfluxDB Query Language}
-# and prints a tabularized output.
-#
-# i.e. query('select value from response_times')
-#
-# @see InfluxDB::Client#query
-# @see InfluxDBClient::Client.print_tabularize
-#
-# @param query [String] the query
-# @return [Hash] the number of points per time series i.e. { 'response_times.count' => 10 }
-def query(query)
-  result = db.query(query)
-  InfluxDBClient::Client.print_tabularize(result)
-end
-
 InfluxDBClientTasks.start
 
 # allow typing queries directly from console i.e.`select * from deploys` instead of `query('select * from deploys')`.
 # matches `delete from ...` and `select ... from ...`
 Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Execute a query' do |cmd|
-  query(cmd)
+  result = db.query(cmd)
+  InfluxDBClient::Client.print_tabularize(result)
 end
 
 # awesome_print
