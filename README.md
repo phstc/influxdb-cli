@@ -1,7 +1,7 @@
 InfluxDB-CLI
 ============
 
-Ruby CLI for InfluxDB is a simple Ruby console (empowered with [Pry](https://github.com/pry/pry)) connected to an InfluxDB server with supplied parameters. In order to connect to InfluxDB, it uses [influxdb-ruby](https://github.com/influxdb/influxdb-ruby), so you can access any avaiable method from influxdb-ruby in the console through the `db` variable i.e.: `db.write_point(name, data)`, `db.query('SELECT value FROM response_times')` etc.
+Ruby CLI for InfluxDB is a simple Ruby console (empowered with [Pry](https://github.com/pry/pry)) connected to an InfluxDB server using given parameters. In order to connect to InfluxDB, it uses [influxdb-ruby](https://github.com/influxdb/influxdb-ruby), so you can access any avaiable method from influxdb-ruby in the console through the `db` variable i.e.: `db.write_point(name, data)`, `db.query('SELECT value FROM response_times')` etc.
 
 [![Build Status](https://secure.travis-ci.org/phstc/influxdb-cli.png)](http://travis-ci.org/phstc/influxdb-cli)
 
@@ -43,7 +43,7 @@ or
 
 ```shell
 influxdb-cli -u user -p password -d database -h sandbox.influxdb.org --port 9061
-Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"phstc", "password"=>"RggLimEQfK36or", "database"=>"spree"}
+Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"username", "password"=>"password", "database"=>"database"}
 ✔ ready
 ```
 

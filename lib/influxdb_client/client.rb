@@ -4,6 +4,11 @@ module InfluxDBClient
   class Client
     QUERY_LANGUAGE_MATCHER = /\A\s*((delete\s+from|select\s+.+\s+from)\s.+)\z/i
 
+    # Prints a tabularized output from a query result.
+    #
+    # @param result [Hash] the {InfluDB::Client#query result}
+    # @param output [STDOUT] the output to `puts` the results
+    # @return [Hash] the number of points per time series i.e. { 'response_times.count' => 10 }
     def self.print_tabularize(result, output=$stdout)
       number_of_points = {}
       result.keys.each do |series|
