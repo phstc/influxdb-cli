@@ -6,7 +6,7 @@ module InfluxDBClient
 
     def self.print_tabularize(result, output=$stdout)
       number_of_points = {}
-      result.to_h.keys.each do |series|
+      result.keys.each do |series|
         headings = result[series].first.keys
         rows = result[series].collect(&:values)
         table = Terminal::Table.new title: series, headings: headings, rows: rows
