@@ -6,4 +6,9 @@ rvm:
   - ruby-head
   - jruby-head
 
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
 script: bundle exec rspec spec
