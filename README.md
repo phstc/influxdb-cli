@@ -61,9 +61,9 @@ Query with a [tabularized](https://github.com/visionmedia/terminal-table) output
 | ...           | ...             | ...             | ...    | ...             | ...               | ...      |
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
 
-=> {
-    "deploys.count" => 1
-}
+1 result found for deploys
+
+Query duration: 0.49s
 ```
 
 
