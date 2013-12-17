@@ -12,7 +12,9 @@ require 'influxdb_client/version'
 require 'influxdb_client/client'
 
 class InfluxDBClientTasks < Thor
-  desc 'db', 'Connect to InfluxDB'
+  @@db = nil
+
+  desc 'db', 'Connect to InfluxDB (default command)'
   method_option :host,      :default => 'localhost',  :aliases => '-h',  :desc => 'Hostname'
   method_option :port,      :default => 8086,         :desc => 'Port'
   method_option :username,  :default => 'root',       :aliases => '-u',  :desc => 'Username'
@@ -28,13 +30,11 @@ class InfluxDBClientTasks < Thor
   desc 'version', 'Show influxdb-cli version'
   def version
     puts "influxdb-cli #{InfluxDBClient::VERSION}"
-    # skip `pry` console
-    exit 0
   end
 
   def self.db; @@db; end
 
-  default_task :db
+  default_command :db
 end
 
 # Returns {InfluxDB::Client} instance using given parameters.
@@ -43,6 +43,9 @@ end
 def db; InfluxDBClientTasks.db; end
 
 InfluxDBClientTasks.start
+
+# exit if the db command wasn't called
+exit 0 unless db
 
 # allow typing queries directly from console i.e.`select * from deploys` instead of `query('select * from deploys')`.
 # matches `delete from ...` and `select ... from ...`
