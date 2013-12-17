@@ -31,10 +31,10 @@ Options:
 
 ### Usage
 
-Connect to a database:
+#### Connect to a database
 
 ```shell
-influxdb-cli
+$ influxdb-cli
 Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"=>"root", "database"=>"db"}
 ✔ ready
 ```
@@ -42,16 +42,64 @@ Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"
 or
 
 ```shell
-influxdb-cli -u user -p password -d database -h sandbox.influxdb.org --port 9061
+$ influxdb-cli -u user -p password -d database -h sandbox.influxdb.org --port 9061
 Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"username", "password"=>"password", "database"=>"database"}
 ✔ ready
 ```
 
 [InfluxDB Playground](http://play.influxdb.org) :metal:
 
-Query with a [tabularized](https://github.com/visionmedia/terminal-table) output:
+#### Create a database and user
 
-```shell
+```ruby
+2.0.0 (main)> db.create_database 'db'
+2.0.0 (main)> db.create_database_user 'db', 'root', 'root'
+```
+
+#### List databases
+
+```ruby
+2.0.0 (main)> db.get_database_list
+```
+
+#### Switch databases
+
+```ruby
+2.0.0 (main)> db.database
+=> "db"
+2.0.0 (main)> db.database = 'other_database'
+=> "other_database"
+```
+
+#### Write a point
+
+```ruby
+2.0.0 (main)> db.write_point('test', { message: 'Hello Pablo' })
+
+2.0.0 (main)> SELECT * FROM test
+
++---------------+-----------------+-------------+
+|                     test                      |
++---------------+-----------------+-------------+
+| time          | sequence_number | message     |
++---------------+-----------------+-------------+
+| 1387287723816 | 1               | Hello Pablo |
++---------------+-----------------+-------------+
+1 result found for test
+
+Query duration: 0.0s
+```
+
+#### Return the last point from every time series in the database
+
+```ruby
+2.0.0 (main)> SELECT * FROM /.*/
+```
+
+
+#### Query with a [tabularized output](https://github.com/visionmedia/terminal-table)
+
+```ruby
 2.0.0 (main)> SELECT * FROM deploys
 +---------------+-----------------+-----------------+--------+-----------------+-------------------+----------+
 |                                                    deploys                                                  |
@@ -66,10 +114,9 @@ Query with a [tabularized](https://github.com/visionmedia/terminal-table) output
 Query duration: 0.49s
 ```
 
+#### Query with a [Ruby Hash output](https://github.com/michaeldv/awesome_print)
 
-Query with a Ruby Hash output ([awesome_print](https://github.com/michaeldv/awesome_print)):
-
-```shell
+```ruby
 2.0.0 (main)> db.query('SELECT * FROM deploys')
 => {
      "deploys" => [
@@ -84,9 +131,9 @@ Query with a Ruby Hash output ([awesome_print](https://github.com/michaeldv/awes
         },
 ```
 
-Other methods:
+#### Other methods
 
-```shell
+```ruby
 2.0.0 (main)> db.write_point(name, data)
 2.0.0 (main)> db.get_database_list
 2.0.0 (main)> ls -q db
@@ -101,7 +148,9 @@ instance variables: @database  @host  @http  @password  @port  @queue  @username
 
 As influxdb-cli is empowered with Pry, all Pry awesome commands are avaiable in the console.
 
-```shell
+#### show-source
+
+```ruby
 2.0.0 (main)> show-source InfluxDB::Client#query
 
 From: /Users/pablo/.gem/ruby/2.0.0/gems/influxdb-0.0.11/lib/influxdb/client.rb @ line 152:
@@ -128,7 +177,9 @@ def query(query)
 end
 ```
 
-```shel
+#### show-doc
+
+```ruby
 
 2.0.0 (main)> show-doc InfluxDB::Client#initialize
 
