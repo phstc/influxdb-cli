@@ -10,9 +10,15 @@ module InfluxDBClient
     # @param output [STDOUT] the output to `puts` the results
     # @return [Hash] the number of points per time series i.e. { 'response_times.count' => 10 }
     def self.print_tabularize(result, output=$stdout)
-      (result || {}).keys.each do |series|
-        result_series = result[series]
+      result ||= {}
 
+      if result.keys.empty?
+        output.puts 'No results found'
+        return
+      end
+
+      result.keys.each do |series|
+        result_series = result[series]
         if result_series.any?
           output.puts generate_table(series, result_series)
           output.puts "#{result_series.size} #{pluralize(result_series.size, 'result')} found for #{series}"

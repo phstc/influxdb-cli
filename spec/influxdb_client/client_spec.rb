@@ -56,11 +56,18 @@ module InfluxDBClient
         described_class.print_tabularize(result, output)
       end
 
-      context 'when empty results' do
+      context 'when no results' do
         let(:result)  { { series1: [{ value1: 1, value2: 2 }],
                           series2: [] } }
 
-        it 'prints no results found' do
+        it 'prints generic no results found' do
+          output = double 'Output'
+          result = {}
+          expect(output).to receive(:puts).once.with('No results found')
+          described_class.print_tabularize(result, output)
+        end
+
+        it 'prints specific no results found per series' do
           output = double 'Output'
           table  = double 'Table'
           Terminal::Table.stub(new: table)
@@ -74,6 +81,15 @@ module InfluxDBClient
           # line break for series
           expect(output).to receive(:puts).twice.with(no_args)
 
+          described_class.print_tabularize(result, output)
+        end
+      end
+
+      context 'when result is null' do
+        it 'prints generic no results found' do
+          output = double 'Output'
+          result = nil
+          expect(output).to receive(:puts).once.with('No results found')
           described_class.print_tabularize(result, output)
         end
       end
