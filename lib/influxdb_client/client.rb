@@ -2,7 +2,8 @@ require 'terminal-table'
 
 module InfluxDBClient
   class Client
-    QUERY_LANGUAGE_MATCHER = /\A\s*((delete\s+from|select\s+.+\s+from)\s.+)\z/i
+    QUERY_LANGUAGE_MATCHER  = /\A\s*((delete\s+from|select\s+.+\s+from)\s.+)\z/i
+    SWITCH_DATABASE_MATCHER = /\A\s*use\s+(\S+)\s*\z/i
 
     # Prints a tabularized output from a query result.
     #

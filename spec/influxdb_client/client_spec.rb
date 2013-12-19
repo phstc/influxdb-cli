@@ -25,6 +25,17 @@ module InfluxDBClient
       end
     end
 
+    describe '.SWITCH_DATABASE_MATCHER' do
+      subject { Client::SWITCH_DATABASE_MATCHER }
+      it { should match('use response_times') }
+      it { should match('  use   response_times  ') }
+
+      it { should_not match('use') }
+      it { should_not match(' use ') }
+      it { should_not match('use response_times tests') }
+      it { should_not match('useresponse_times') }
+    end
+
     describe '.print_tabularize' do
       let(:result)  { { series1: [{ value1: 1, value2: 2 }],
                         series2: [{ value3: 3,   value4: 4, value5: nil, value6: nil },

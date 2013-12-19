@@ -49,15 +49,19 @@ exit 0 unless db
 
 # allow typing queries directly from console i.e.`select * from deploys` instead of `query('select * from deploys')`.
 # matches `delete from ...` and `select ... from ...`
-Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Execute a query' do |cmd|
+Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Execute a query' do |query|
   start     = Time.now
-  result    = db.query(cmd)
+  result    = db.query(query)
   duration  = Time.now - start
 
   InfluxDBClient::Client.print_tabularize(result)
 
   # print query duration in seconds
   puts "Query duration: #{duration.round(2)}s"
+end
+
+Pry::Commands.block_command InfluxDBClient::Client::SWITCH_DATABASE_MATCHER, 'Switch databases' do |db_name|
+  db.database = db_name
 end
 
 # awesome_print
