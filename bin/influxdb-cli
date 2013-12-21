@@ -60,6 +60,7 @@ Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Exe
   puts "Query duration: #{duration.round(2)}s"
 end
 
+# switch databases `use db_name`
 Pry::Commands.block_command InfluxDBClient::Client::SWITCH_DATABASE_MATCHER, 'Switch databases' do |db_name|
   db.database = db_name
 end

@@ -65,9 +65,8 @@ Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"user
 #### Switch databases
 
 ```ruby
+2.0.0 (main)> use other_database
 2.0.0 (main)> db.database
-=> "db"
-2.0.0 (main)> db.database = 'other_database'
 => "other_database"
 ```
 
