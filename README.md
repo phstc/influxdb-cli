@@ -92,7 +92,7 @@ Query duration: 0.0s
 #### Return the last point from every time series in the database
 
 ```ruby
-2.0.0 (main)> SELECT * FROM /.*/
+2.0.0 (main)> SELECT * FROM /.*/ LIMIT 1
 ```
 
 
