@@ -73,18 +73,18 @@ Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"user
 #### Write a point
 
 ```ruby
-2.0.0 (main)> db.write_point('test', { message: 'Hello Pablo' })
+2.0.0 (main)> db.write_point('tests', { message: 'Hello Pablo' })
 
-2.0.0 (main)> SELECT * FROM test
+2.0.0 (main)> SELECT * FROM tests
 
 +---------------+-----------------+-------------+
-|                     test                      |
+|                     tests                     |
 +---------------+-----------------+-------------+
 | time          | sequence_number | message     |
 +---------------+-----------------+-------------+
 | 1387287723816 | 1               | Hello Pablo |
 +---------------+-----------------+-------------+
-1 result found for test
+1 result found for tests
 
 Query duration: 0.0s
 ```
@@ -93,6 +93,18 @@ Query duration: 0.0s
 
 ```ruby
 2.0.0 (main)> SELECT * FROM /.*/ LIMIT 1
+```
+
+or to get only the name from every time series in the database.
+
+```ruby
+2.0.0 (main)> db.query('SELECT * FROM /.*/ LIMIT 1').keys
+=> [
+    [0] "tests",
+    [1] "response_times",
+    [2] "deploys",
+    [3] "..."
+]
 ```
 
 
