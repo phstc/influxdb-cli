@@ -15,11 +15,11 @@ class InfluxDBClientTasks < Thor
   @@db = nil
 
   desc 'db', 'Connect to InfluxDB (default command)'
-  method_option :host,      :default => 'localhost',  :aliases => '-h',  :desc => 'Hostname'
+  method_option :host,      :default => 'localhost',  :desc => 'Hostname'
   method_option :port,      :default => 8086,         :desc => 'Port'
-  method_option :username,  :default => 'root',       :aliases => '-u',  :desc => 'Username'
-  method_option :password,  :default => 'root',       :aliases => '-p',  :desc => 'Password'
-  method_option :database,  :default => 'db',         :aliases => '-d',  :desc => 'Database'
+  method_option :username,  :default => 'root',       :desc => 'Username', :aliases => '-u'
+  method_option :password,  :default => 'root',       :desc => 'Password', :aliases => '-p'
+  method_option :database,  :default => 'db',         :desc => 'Database', :aliases => '-d'
   def db
     puts "Connecting to #{options.inspect}"
     @@db ||= InfluxDB::Client.new options[:database],

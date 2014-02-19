@@ -17,7 +17,7 @@ Usage:
   influxdb-cli
 
 Options:
-  -h, [--host=HOST]          # Hostname
+      [--host=HOST]          # Hostname
                              # Default: localhost
       [--port=PORT]          # Port
                              # Default: 8086
@@ -42,7 +42,7 @@ Connecting to {"host"=>"localhost", "port"=>8086, "username"=>"root", "password"
 or
 
 ```shell
-$ influxdb-cli -u user -p password -d database -h sandbox.influxdb.org --port 9061
+$ influxdb-cli -u user -p password -d database --host sandbox.influxdb.org --port 9061
 Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"username", "password"=>"password", "database"=>"database"}
 ✔ ready
 ```
