@@ -1,7 +1,7 @@
 InfluxDB-CLI
 ============
 
-Ruby CLI for InfluxDB is a simple Ruby console (empowered with [Pry](https://github.com/pry/pry)) connected to an InfluxDB server using given parameters. In order to connect to InfluxDB, it uses [influxdb-ruby](https://github.com/influxdb/influxdb-ruby), so you can access any avaiable method from influxdb-ruby in the console through the `db` variable i.e.: `db.write_point(name, data)`, `db.query('SELECT value FROM response_times')` etc.
+Ruby CLI for InfluxDB is a simple Ruby console (empowered with [Pry](https://github.com/pry/pry)) connected to an InfluxDB server using given parameters. In order to connect to InfluxDB, it uses [influxdb-ruby](https://github.com/influxdb/influxdb-ruby), so you can access any available method from influxdb-ruby in the console through the `db` variable i.e.: `db.write_point(name, data)`, `db.query('SELECT value FROM response_times')` etc.
 
 [![Build Status](https://secure.travis-ci.org/phstc/influxdb-cli.png)](http://travis-ci.org/phstc/influxdb-cli)
 
@@ -157,7 +157,7 @@ instance variables: @database  @host  @http  @password  @port  @queue  @username
 
 ### Pry commands
 
-As influxdb-cli is empowered with Pry, all Pry awesome commands are avaiable in the console.
+As influxdb-cli is empowered with Pry, all Pry awesome commands are available in the console.
 
 #### show-source
 
