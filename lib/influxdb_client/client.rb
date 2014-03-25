@@ -33,7 +33,6 @@ module InfluxDBClient
 
     def self.pretty=(pretty)
       @pretty = pretty
-      puts "set pretty to #{@pretty.inspect}"
     end
 
     private
