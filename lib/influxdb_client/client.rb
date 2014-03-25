@@ -10,7 +10,7 @@ module InfluxDBClient
     # @param result [Hash] the {InfluDB::Client#query result}
     # @param output [STDOUT] the output to `puts` the results
     # @return [Hash] the number of points per time series i.e. { 'response_times.count' => 10 }
-    def self.print_tabularize(result, output=$stdout, options = {})
+    def self.print_tabularize(result, output=$stdout)
       result ||= {}
 
       if result.keys.empty?
@@ -21,7 +21,7 @@ module InfluxDBClient
       result.keys.each do |series|
         result_series = result[series]
         if result_series.any?
-          output.puts generate_table(series, result_series, options)
+          output.puts generate_table(series, result_series)
           output.puts "#{result_series.size} #{pluralize(result_series.size, 'result')} found for #{series}"
         else
           output.puts "No results found for #{series}"
@@ -46,7 +46,7 @@ module InfluxDBClient
       end
     end
 
-    def self.generate_table(series, result_series, options = {})
+    def self.generate_table(series, result_series)
       if @pretty
         result_series = result_series.map do |row|
           row["time"] = Time.at(row["time"]/1000)
