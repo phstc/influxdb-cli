@@ -31,6 +31,11 @@ module InfluxDBClient
       end
     end
 
+    def self.pretty=(pretty)
+      @pretty = pretty
+      puts "set pretty to #{@pretty.inspect}"
+    end
+
     private
 
     def self.pluralize(count, singular, plural = nil)
@@ -42,7 +47,7 @@ module InfluxDBClient
     end
 
     def self.generate_table(series, result_series, options = {})
-      if options[:pretty]
+      if @pretty
         result_series = result_series.map do |row|
           row["time"] = Time.at(row["time"]/1000)
           row
