@@ -31,6 +31,10 @@ module InfluxDBClient
       end
     end
 
+    def self.pretty=(pretty)
+      @pretty = pretty
+    end
+
     private
 
     def self.pluralize(count, singular, plural = nil)
@@ -42,8 +46,15 @@ module InfluxDBClient
     end
 
     def self.generate_table(series, result_series)
+      if @pretty
+        result_series = result_series.map do |row|
+          row["time"] = Time.at(row["time"]/1000)
+          row
+        end
+      end
+
       headings = result_series.first.keys
-      rows = result_series.collect(&:values)
+      rows     = result_series.collect(&:values)
 
       Terminal::Table.new title: series, headings: headings, rows: rows
     end
