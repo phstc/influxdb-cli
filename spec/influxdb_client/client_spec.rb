@@ -37,18 +37,32 @@ module InfluxDBClient
     end
 
     describe '.print_tabularize' do
-      let(:result)  { { series1: [{ value1: 1, value2: 2 }],
-                        series2: [{ value3: 3,   value4: 4, value5: nil, value6: nil },
-                                  { value3: nil, value4: 4, value5: 5,   value6: 6   }] } }
+      let(:result)  { { series1: [{ 'time' => 1387287723816, 'value1' => 1,   'value2' => 2 }],
+                        series2: [{ 'time' => 1394552447955, 'value3' => 3,   'value4' => 4, 'value5' => nil, 'value6' => nil },
+                                  { 'time' => 1394664358980, 'value3' => nil, 'value4' => 4, 'value5' => 5,   'value6' => 6   }] } }
 
       it 'generates tables' do
         expect(Terminal::Table).to receive(:new).
-          with(title: :series1, headings: [:value1, :value2], rows: [[1, 2]])
+          with(title: :series1, headings: %w[time value1 value2], rows: [[1387287723816, 1, 2]])
 
         expect(Terminal::Table).to receive(:new).
-          with(title: :series2, headings: [:value3, :value4, :value5, :value6], rows: [[3, 4, nil, nil], [nil, 4, 5, 6]])
+          with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [[1394552447955, 3, 4, nil, nil], [1394664358980, nil, 4, 5, 6]])
 
         described_class.print_tabularize(result)
+      end
+
+      context 'when pretty' do
+        before(:all) { described_class.pretty = true }
+        after(:all)  { described_class.pretty = false }
+        it 'generates tables' do
+          expect(Terminal::Table).to receive(:new).
+            with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 11:42:03 -0200', 1, 2]])
+
+          expect(Terminal::Table).to receive(:new).
+            with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [['2014-03-11 12:40:47 -0300', 3, 4, nil, nil], ['2014-03-12 19:45:58 -0300', nil, 4, 5, 6]])
+
+          described_class.print_tabularize(result)
+        end
       end
 
       it 'prints results' do

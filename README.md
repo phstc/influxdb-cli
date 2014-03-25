@@ -27,6 +27,7 @@ Options:
                              # Default: root
   -d, [--database=DATABASE]  # Database
                              # Default: db
+      [--pretty=PRETTY]      # Human readable times
 ```
 
 ### Usage

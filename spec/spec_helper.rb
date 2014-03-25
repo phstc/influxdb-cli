@@ -1,6 +1,7 @@
 require 'rspec'
 require 'fileutils'
 require 'tempfile'
+require 'pry-byebug'
 
 Dir['../lib/**/*.rb'].each &method(:require)
 
