@@ -48,7 +48,7 @@ module InfluxDBClient
     def self.generate_table(series, result_series)
       headings = result_series.first.keys
       rows = result_series.map do |row|
-        row['time'] = Time.at(row['time'] / 1000).to_s if @pretty
+        row['time'] = Time.at(row['time'] / 1000).utc.to_s if @pretty
         row.values
       end
 
