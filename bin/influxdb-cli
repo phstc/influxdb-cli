@@ -20,7 +20,7 @@ class InfluxDBClientTasks < Thor
   method_option :username,  :default => 'root',       :desc => 'Username', :aliases => '-u'
   method_option :password,  :default => 'root',       :desc => 'Password', :aliases => '-p'
   method_option :database,  :default => 'db',         :desc => 'Database', :aliases => '-d'
-  method_option :pretty,    :default => nil,          :desc => 'Human readable times'
+  method_option :pretty,    :default => nil,          :desc => 'Human readable times (UTC)'
 
   def db
     puts "Connecting to #{options.inspect}"
