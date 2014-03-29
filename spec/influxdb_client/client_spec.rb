@@ -56,10 +56,10 @@ module InfluxDBClient
         after(:all)  { described_class.pretty = false }
         it 'generates tables' do
           expect(Terminal::Table).to receive(:new).
-            with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 13:42:03 UTC', 1, 2]])
+            with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 13:42:03.160', 1, 2]])
 
           expect(Terminal::Table).to receive(:new).
-            with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [['2014-03-11 15:40:47 UTC', 3, 4, nil, nil], ['2014-03-12 22:45:58 UTC', nil, 4, 5, 6]])
+            with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [['2014-03-11 15:40:47.549', 3, 4, nil, nil], ['2014-03-12 22:45:58.799', nil, 4, 5, 6]])
 
           described_class.print_tabularize(result)
         end
