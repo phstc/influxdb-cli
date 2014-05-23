@@ -21,7 +21,7 @@ class InfluxDBClientTasks < Thor
   method_option :password,  :default => 'root',       :desc => 'Password', :aliases => '-p'
   method_option :database,  :default => 'db',         :desc => 'Database', :aliases => '-d'
   method_option :pretty,    :default => nil,          :desc => 'Human readable times (UTC)'
-  method_option :ssl,       :default => false,        :desc => 'Connect using TLS/SSL', :force => :boolean
+  method_option :ssl,       :default => false,        :desc => 'Connect using TLS/SSL', :type => :boolean
 
   def db
     puts "Connecting to #{options.inspect}"
