@@ -48,27 +48,51 @@ module InfluxDBClient
         expect(Terminal::Table).to receive(:new).
           with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [[1394552447955, 3, 4, nil, nil], [1394664358980, nil, 4, 5, 6]])
 
-        described_class.print_tabularize(result)
+        described_class.print_tabularize(result, :ms)
       end
 
       context 'when pretty' do
         before(:all) { described_class.pretty = true }
         after(:all)  { described_class.pretty = false }
-        it 'generates tables' do
-          expect(Terminal::Table).to receive(:new).
-            with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 13:42:03.160', 1, 2]])
 
-          expect(Terminal::Table).to receive(:new).
-            with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [['2014-03-11 15:40:47.549', 3, 4, nil, nil], ['2014-03-12 22:45:58.799', nil, 4, 5, 6]])
-
-          described_class.print_tabularize(result)
+        context 'and time precision is seconds' do
+          let(:result)  { { series1: [{ 'time' => 1387287723, 'value1' => 1, 'value2' => 2 }] } }
+          it 'generates tables' do
+            expect(Terminal::Table).to receive(:new).
+              with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 13:42:03', 1, 2]])
+            
+            described_class.print_tabularize(result, :s)
+          end
         end
+
+        context 'and time precision is milliseconds' do
+          it 'generates tables' do
+            expect(Terminal::Table).to receive(:new).
+              with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 13:42:03.815', 1, 2]])
+
+            expect(Terminal::Table).to receive(:new).
+              with(title: :series2, headings: %w[time value3 value4 value5 value6], rows: [['2014-03-11 15:40:47.954', 3, 4, nil, nil], ['2014-03-12 22:45:58.980', nil, 4, 5, 6]])
+
+            described_class.print_tabularize(result, :ms)
+          end
+        end
+
+        context 'and time precision is microseconds' do
+          let(:result)  { { series1: [{ 'time' => 1387287723816232, 'value1' => 1, 'value2' => 2 }] } }
+          it 'generates tables' do
+            expect(Terminal::Table).to receive(:new).
+              with(title: :series1, headings: %w[time value1 value2], rows: [['2013-12-17 13:42:03.816231', 1, 2]])
+            
+            described_class.print_tabularize(result, :u)
+          end
+        end
+        
       end
 
       it 'prints results' do
         output = double 'Output'
         table  = double 'Table'
-        Terminal::Table.stub(new: table)
+        allow(Terminal::Table).to receive(:new).and_return(table)
 
         # should print series1 and series2
         expect(output).to receive(:puts).twice.with(table)
@@ -78,7 +102,7 @@ module InfluxDBClient
         # line break for series
         expect(output).to receive(:puts).twice.with(no_args)
 
-        described_class.print_tabularize(result, output)
+        described_class.print_tabularize(result, :ms, output)
       end
 
       context 'when no results' do
@@ -89,13 +113,13 @@ module InfluxDBClient
           output = double 'Output'
           result = {}
           expect(output).to receive(:puts).once.with('No results found')
-          described_class.print_tabularize(result, output)
+          described_class.print_tabularize(result, :ms, output)
         end
 
         it 'prints specific no results found per series' do
           output = double 'Output'
           table  = double 'Table'
-          Terminal::Table.stub(new: table)
+          allow(Terminal::Table).to receive(:new).and_return(table)
 
           # should print series1
           expect(output).to receive(:puts).once.with(table)
@@ -106,7 +130,7 @@ module InfluxDBClient
           # line break for series
           expect(output).to receive(:puts).twice.with(no_args)
 
-          described_class.print_tabularize(result, output)
+          described_class.print_tabularize(result, :ms, output)
         end
       end
 
@@ -115,10 +139,9 @@ module InfluxDBClient
           output = double 'Output'
           result = nil
           expect(output).to receive(:puts).once.with('No results found')
-          described_class.print_tabularize(result, output)
+          described_class.print_tabularize(result, :ms, output)
         end
       end
     end
   end
 end
-

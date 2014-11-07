@@ -16,13 +16,13 @@ class InfluxDBClientTasks < Thor
   @@db = nil
 
   desc 'db', 'Connect to InfluxDB (default command)'
-  method_option :host,      :default => 'localhost',  :desc => 'Hostname'
-  method_option :port,      :default => 8086,         :desc => 'Port'
-  method_option :username,  :default => 'root',       :desc => 'Username', :aliases => '-u'
-  method_option :password,  :default => 'root',       :desc => 'Password', :aliases => '-p'
-  method_option :database,  :default => 'db',         :desc => 'Database', :aliases => '-d'
-  method_option :pretty,    :default => nil,          :desc => 'Human readable times (UTC)'
-  method_option :ssl,       :default => false,        :desc => 'Connect using TLS/SSL', :type => :boolean
+  method_option :host,     default: 'localhost', desc: 'Hostname'
+  method_option :port,     default: 8086,        desc: 'Port'
+  method_option :username, default: 'root',      desc: 'Username', aliases: '-u'
+  method_option :password, default: 'root',      desc: 'Password', aliases: '-p'
+  method_option :database, default: 'db',        desc: 'Database', aliases: '-d'
+  method_option :pretty,   default: nil,         desc: 'Human readable times (UTC)'
+  method_option :ssl,      default: false,       desc: 'Connect using TLS/SSL', type: :boolean
 
   def db
     puts "Connecting to #{options.inspect}"
@@ -65,7 +65,7 @@ Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Exe
   result    = db.query(query)
   duration  = Time.now - start
 
-  InfluxDBClient::Client.print_tabularize(result)
+  InfluxDBClient::Client.print_tabularize(result, db.time_precision)
 
   # print query duration in seconds
   puts "Query duration: #{duration.round(2)}s"
@@ -81,4 +81,3 @@ Pry.config.print = proc { |output, value| Pry::Helpers::BaseHelpers.stagger_outp
 
 # TODO start `pry` only in case of `db` command, `help` and `version` should not start `pry`
 pry
-
