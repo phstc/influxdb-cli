@@ -23,7 +23,7 @@ class InfluxDBClientTasks < Thor
   method_option :database,       default: 'db',        desc: 'Database', aliases: '-d'
   method_option :pretty,         default: nil,         desc: 'Human readable times (UTC)'
   method_option :ssl,            default: false,       desc: 'Connect using TLS/SSL', type: :boolean
-  method_option :time_precision, default: 's',         desc: 'Time precision ("s", "ms", "u")'
+  method_option :time_precision, default: 's',         desc: 'Time precision can be set to either "s" for seconds, "ms" for milliseconds, or "u" for microseconds'
 
   def db
     puts "Connecting to #{options.inspect}"

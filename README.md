@@ -13,21 +13,26 @@ gem install influxdb-cli
 ### Options
 
 ```shell
+$ influxdb-cli help db
+
 Usage:
-  influxdb-cli
+  influxdb-cli db
 
 Options:
-      [--host=HOST]          # Hostname
-                             # Default: localhost
-      [--port=PORT]          # Port
-                             # Default: 8086
-  -u, [--username=USERNAME]  # Username
-                             # Default: root
-  -p, [--password=PASSWORD]  # Password
-                             # Default: root
-  -d, [--database=DATABASE]  # Database
-                             # Default: db
-      [--pretty=PRETTY]      # Human readable times
+      [--host=HOST]                      # Hostname
+                                         # Default: localhost
+      [--port=PORT]                      # Port
+                                         # Default: 8086
+  -u, [--username=USERNAME]              # Username
+                                         # Default: root
+  -p, [--password=PASSWORD]              # Password
+                                         # Default: root
+  -d, [--database=DATABASE]              # Database
+                                         # Default: db
+      [--pretty=PRETTY]                  # Human readable times (UTC)
+      [--ssl], [--no-ssl]                # Connect using TLS/SSL
+      [--time-precision=TIME_PRECISION]  # Time precision can be set to either "s" for seconds, "ms" for milliseconds, or "u" for microseconds
+                                         # Default: s
 ```
 
 ### Usage
