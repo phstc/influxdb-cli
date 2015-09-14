@@ -65,7 +65,7 @@ Connecting to {"host"=>"sandbox.influxdb.org", "port"=>"9061", "username"=>"user
 #### List databases
 
 ```ruby
-2.0.0 (main)> db.get_database_list
+2.0.0 (main)> db.list_databases
 ```
 
 #### Switch databases
@@ -152,12 +152,12 @@ Query duration: 0.49s
 
 ```ruby
 2.0.0 (main)> db.write_point(name, data)
-2.0.0 (main)> db.get_database_list
+2.0.0 (main)> db.list_databases
 2.0.0 (main)> ls -q db
 InfluxDB::Client#methods:
   _write                    create_database       database=             delete_database_user    get_database_user_list  password   port=  queue=                username
   alter_database_privilege  create_database_user  delete_cluster_admin  get_cluster_admin_list  host                    password=  query  update_cluster_admin  username=
-  create_cluster_admin      database              delete_database       get_database_list       host=                   port       queue  update_database_user  write_point
+  create_cluster_admin      database              delete_database       list_databases       host=                   port       queue  update_database_user  write_point
 instance variables: @database  @host  @http  @password  @port  @queue  @username
 ```
 
