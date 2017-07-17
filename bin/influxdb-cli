@@ -12,9 +12,11 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'influxdb_client/version'
 require 'influxdb_client/client'
 
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/LineLength
+# rubocop:disable Style/GlobalVars
 class InfluxDBClientTasks < Thor
-  @@db = nil
-
   desc 'db', 'Connect to InfluxDB (default command)'
   method_option :host,           default: 'localhost', desc: 'Hostname'
   method_option :port,           default: 8086,        desc: 'Port'
@@ -24,19 +26,22 @@ class InfluxDBClientTasks < Thor
   method_option :pretty,         default: nil,         desc: 'Human readable times (UTC)'
   method_option :ssl,            default: false,       desc: 'Connect using TLS/SSL', type: :boolean
   method_option :time_precision, default: 's',         desc: 'Time precision can be set to either "s" for seconds, "ms" for milliseconds, or "u" for microseconds'
-
   def db
     puts "Connecting to #{options.inspect}"
-    @@db ||= InfluxDB::Client.new options[:database],
-      {
-        username: options[:username],
-        password: options[:password],
-        host: options[:host],
-        port: options[:port],
-        use_ssl: options[:ssl],
-        time_precision: options[:time_precision]
-      }
+
+    $db = InfluxDB::Client.new(
+      options[:database],
+      username:       options[:username],
+      password:       options[:password],
+      host:           options[:host],
+      port:           options[:port],
+      use_ssl:        options[:ssl],
+      time_precision: options[:time_precision]
+    )
+    $time_precision = options[:time_precision]
+
     InfluxDBClient::Client.pretty = options[:pretty]
+
     puts '✔ ready'
   end
 
@@ -45,42 +50,46 @@ class InfluxDBClientTasks < Thor
     puts "influxdb-cli #{InfluxDBClient::VERSION}"
   end
 
-  def self.db; @@db; end
-
   default_command :db
 end
 
-# Returns {InfluxDB::Client} instance using given parameters.
-#
-# @return [InfluxDB::Client]
-def db; InfluxDBClientTasks.db; end
-
 InfluxDBClientTasks.start
 
-# exit if the db command wasn't called
+def db
+  $db
+end
+
+def time_precision
+  $time_precision
+end
+
 exit 0 unless db
 
-
-# allow typing queries directly from console i.e.`select * from deploys` instead of `query('select * from deploys')`.
-# matches `delete from ...` and `select ... from ...`
-Pry::Commands.block_command InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER, 'Execute a query' do |query|
+# allow typing queries directly from console
+# i.e. `SELECT * FROM deploys` instead of `query('SELECT * FROM deploys')`.
+Pry::Commands.block_command(
+  InfluxDBClient::Client::QUERY_LANGUAGE_MATCHER,
+  'Execute a query'
+) do |query|
   start     = Time.now
   result    = db.query(query)
   duration  = Time.now - start
 
-  InfluxDBClient::Client.print_tabularize(result, db.time_precision)
+  InfluxDBClient::Client.print_tabularize(result, time_precision)
 
   # print query duration in seconds
   puts "Query duration: #{duration.round(2)}s"
 end
 
 # switch databases `use db_name`
-Pry::Commands.block_command InfluxDBClient::Client::SWITCH_DATABASE_MATCHER, 'Switch databases' do |db_name|
-  db.database = db_name
-end
+Pry::Commands.block_command(
+  InfluxDBClient::Client::SWITCH_DATABASE_MATCHER,
+  'Switch databases'
+) { |db_name| db.database = db_name }
 
 # awesome_print
-Pry.config.print = proc { |output, value| Pry::Helpers::BaseHelpers.stagger_output("=> #{value.ai}", output) }
+Pry.config.print = proc do |output, value|
+  Pry::Helpers::BaseHelpers.stagger_output("=> #{value.ai}", output)
+end
 
-# TODO start `pry` only in case of `db` command, `help` and `version` should not start `pry`
 pry
